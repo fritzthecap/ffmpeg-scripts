@@ -26,7 +26,7 @@ If I want a title for my video, I process the _title.txt_ file via
 - titleForVideos.sh myVideoDirectory/videoToTakeTitleImageFrom.MP4 32.4
 
 This would extract the image at second 32.4 from _videoToTakeTitleImageFrom.MP4_, put the text in _title.txt_ over it, and store that as _TITLE.MP4_ in same directory.
-The file _TITLE.MP4_ must not be in _cuts.txt_, it would be found atomatically by the now following _cutJoinVideos.sh_.
+The file _TITLE.MP4_ must not be in _cuts.txt_, it would be found automatically by the now following _cutJoinVideos.sh_:
 
 - cutJoinVideos.sh myVideoDirectory
 
