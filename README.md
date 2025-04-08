@@ -47,7 +47,7 @@ The keyword 'all' is for taking the entire video. Videos without any interval de
 " parking lot" is indented, thus it will be ignored. It is a comment for me to know what the cut will contain.  
 From video _20250328_092003.mp4_ the intervals from second 7 to 25.6 and 1:32 to the videos end (keyword 'end') will be taken.  
 For videos that are longer than a minute I use the format _minute:second_, as can be seen on 1:32.  
-If an interval definition is out of range, the script would stop with an error message with the according line number in _cuts.txt_.
+If an interval definition is out of range, the script would stop with an error message with the according line number of _cuts.txt_.
 
 The video _20250328_092136.mp4_ will be ignored, because it has been indented.
 
