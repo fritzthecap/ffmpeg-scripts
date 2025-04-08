@@ -1,5 +1,5 @@
 # ffmpeg-scripts
-UNIX shell scripts for video-cutting with **ffmpeg** (which must be pre-installed).  
+UNIX shell scripts for video-cutting with **ffmpeg** (which must be pre-installed, I currently use version 6.1.1).  
 If you want to scale images via _imageToSize.sh_, you need also **ImageMagick** installed.
 
 Every script displays its purpose and commandine-syntax when called without arguments.
