@@ -5,8 +5,8 @@ If you want to scale images via _imageToSize.sh_, you also need **ImageMagick** 
 Every script displays its purpose and commandline-syntax when called without arguments.
 The scripts were written for the MP4 video format.
 
-Some of the scripts call other scripts. 
-Most of them expect a video-directory where .MP4 (or .mp4) files are to be processed.
+Some of the scripts call other scripts, thus you should stand in the scripts directory when launching one.  
+Most of the scripts expect a video-directory containing .MP4 (or .mp4) files that are to be processed.
 
 ----
 
