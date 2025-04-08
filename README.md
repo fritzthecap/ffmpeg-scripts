@@ -1,6 +1,6 @@
 # ffmpeg-scripts
 UNIX shell scripts for video-cutting with **ffmpeg** (which must be pre-installed, I currently use version 6.1.1).  
-If you want to scale images via _imageToSize.sh_, you also need **ImageMagick** installed.
+If you want to scale images via _imageToSize.sh_ or _imageToVideo.sh_, you also need **ImageMagick** installed.
 
 Every script displays its purpose and commandline-syntax when called without arguments.
 The scripts were written for the MP4 video format.
@@ -18,7 +18,21 @@ This creates a _cuts.txt_ file (cutting plan) in _myVideoDirectory_, which I use
 Additionally I mostly create a file _title.txt_ in _myVideoDirectory_ where I write the video title into.
 
 Then I edit _cuts.txt_ and write 1-n intervals below every listed video, each interval in a separate line.  
-Indenting a line with 1-n spaces is like a comment, every indented line would be ignored.
+Indenting a line with 1-n spaces is like a comment, every indented line would be ignored.  
+For an example cutting plan see below.
+
+If I want a title for my video, I process the _title.txt_ file via
+
+- titleForVideos.sh myVideoDirectory/videoToTakeTitleImageFrom.MP4 32.4
+
+This would extract the image at second 32.4 from _videoToTakeTitleImageFrom.MP4_, put the text in _title.txt_ over it, and store that as _TITLE.MP4_ in same directory.
+The file _TITLE.MP4_ must not be in _cuts.txt_, it would be found atomatically by the now following _cutJoinVideos.sh_.
+
+- cutJoinVideos.sh myVideoDirectory
+
+This will create a sub-directory named _cuts_ where all cuts defined in _cuts.txt_ will be stored as file, sorted like they were ordered in _cuts.txt_.
+After that, the script will join all cuts to a video _myVideoDirectory.MP4_ (named like the directory), which is the final result, containing also the optional _TITLE.MP4_.
+
 
 ----
 
@@ -54,16 +68,4 @@ The video _20250328_092136.mp4_ will be ignored, because it has been indented.
 From video _20250328_092806.mp4_ the intervals from second 4 to 16 will be taken.
 
 ----
-
-If I want a title for my video, I process the _title.txt_ file via
-
-- titleForVideos.sh myVideoDirectory/videoToTakeTitleImageFrom.MP4 32.4
-
-This would extract the image at second 32.4 from _videoToTakeTitleImageFrom.MP4_, put the text in _title.txt_ over it, and store that as _TITLE.MP4_ in same directory.
-The file _TITLE.MP4_ must not be in _cuts.txt_, it would be found atomatically by the now following _cutJoinVideos.sh_.
-
-- cutJoinVideos.sh myVideoDirectory
-
-This will create a sub-directory named _cuts_ where all cuts defined in _cuts.txt_ will be stored as file, sorted like they were ordered in _cuts.txt_.
-After that, the script will join all cuts to a video _myVideoDirectory.MP4_ (named like the directory), which is the final result, containing also the optional _TITLE.MP4_.
 
