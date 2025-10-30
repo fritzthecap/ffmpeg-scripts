@@ -65,7 +65,7 @@ If an interval definition is out of range, the script would stop with an error m
 
 The video _20250328_092136.mp4_ will be ignored, because it has been indented.
 
-From video _20250328_092806.mp4_ the intervals from second 4 to 16 will be taken.
+From video _20250328_092806.mp4_ the interval from second 4 to 16 will be taken.
 
 ----
 
