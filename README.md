@@ -18,7 +18,7 @@ This creates a _cuts.txt_ file (cutting plan) in _myVideoDirectory_, which I use
 Additionally I mostly create a file _title.txt_ in _myVideoDirectory_ where I write the video title into.
 
 Then I edit _cuts.txt_ and write 1-n intervals below every listed video, each interval in a separate line.  
-Indenting a line with 1-n spaces is like a comment, every indented line would be ignored.  
+Indenting a line with 1-n spaces makes it a comment, every indented line would be ignored.  
 For an example cutting plan see below.
 
 If I want a title for my video, I process the _title.txt_ file via
