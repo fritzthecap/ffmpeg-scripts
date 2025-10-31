@@ -10,17 +10,21 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/fritzthecap/ffmpeg-scripts?color=pink)
 
 UNIX shell scripts for video-cutting with **ffmpeg** (which must be pre-installed, I currently use version 6.1.1).  
-If you want to scale images via _imageToSize.sh_ or _imageToVideo.sh_, you also need **ImageMagick** installed.
+If you want to scale images via _imageToSize.sh_ or _imageToVideo.sh_, you also need **ImageMagick** installed.  
+There are no graphical user-interfaces, you work with command-lines in a terminal-window.
+
+For the WINDOWS platform you need to install [CygWin](https://www.cygwin.com/) or use some embedded UNIX-system.
 
 Every script displays its purpose and commandline-syntax when called without arguments.
 The scripts were written for the MP4 video format.
 
 Some of the scripts call other scripts, thus you should stand in the scripts directory when launching one.  
-Most of the scripts expect a video-directory containing .MP4 (or .mp4) files that are to be processed.
+Most of the scripts expect a video-directory containing .MP4 (or .mp4) files that are to be processed.  
+Be aware that scripts are no _binaries_, they are readable, hopefully understandable and adaptable!
 
 ----
 
-Typically I use following workflow to cut my videos:
+Typically I use following **workflow** to cut my videos:
 
 - listVideos.sh myVideoDirectory
 
@@ -46,7 +50,7 @@ After that, the script will join all cuts to a video _myVideoDirectory.MP4_ (nam
 
 ----
 
-Here is an example cutting plan (_myVideoDirectory/cuts.txt_), already edited, containing cut-intervals:
+Here is an **example cutting plan** (_myVideoDirectory/cuts.txt_), already edited, containing cut-intervals:
 
 ```
 hikemountain-map.MP4
@@ -63,7 +67,8 @@ all
 20250328_092806.mp4
 4 16
 ```
-Explanations:
+
+**Explanations:**
 
 The first cut will be _hikemountain-map.MP4_, such a video can be created by _imageToVideo.sh_.  
 The keyword 'all' is for taking the entire video. Videos without any interval definition would be ignored.
