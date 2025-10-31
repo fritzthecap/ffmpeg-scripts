@@ -1,4 +1,14 @@
 # ffmpeg-scripts
+
+![Static Badge](https://img.shields.io/badge/Topic-Video--Cutting-blue)
+![Static Badge](https://img.shields.io/badge/Type-Scripts-blue)
+![Static Badge](https://img.shields.io/badge/Language-UNIX--Shell-darkgreen)
+
+![Static Badge](https://img.shields.io/github/license/fritzthecap/ffmpeg-scripts?color=pink)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/fritzthecap/ffmpeg-scripts?color=pink)
+![GitHub repo size](https://img.shields.io/github/repo-size/fritzthecap/ffmpeg-scripts?color=pink)
+![GitHub last commit](https://img.shields.io/github/last-commit/fritzthecap/ffmpeg-scripts?color=pink)
+
 UNIX shell scripts for video-cutting with **ffmpeg** (which must be pre-installed, I currently use version 6.1.1).  
 If you want to scale images via _imageToSize.sh_ or _imageToVideo.sh_, you also need **ImageMagick** installed.
 
