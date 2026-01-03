@@ -9,18 +9,18 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/fritzthecap/ffmpeg-scripts?color=pink)
 ![GitHub last commit](https://img.shields.io/github/last-commit/fritzthecap/ffmpeg-scripts?color=pink)
 
-UNIX shell scripts for video-cutting with **ffmpeg** (which must be pre-installed, I currently use version 6.1.1).  
-If you want to scale images via _imageToSize.sh_ or use one of its callers like _imageToVideo.sh_, _titleForImage.sh_ or _joinScrollTextVideos.sh_, you also need **ImageMagick** installed.  
-There are no graphical user-interfaces, you work with command-lines in a terminal-window.
+UNIX shell scripts for video-cutting with **ffmpeg** (which must be pre-installed, I currently use version 6.1.1).
+If you want to scale images via _imageToSize.sh_ or use one of its callers like _imageToVideo.sh_, _titleForImage.sh_ or _joinScrollTextVideos.sh_, you also need **ImageMagick** installed. For the WINDOWS platform you need to install [CygWin](https://www.cygwin.com/) or use some embedded UNIX-system.
 
-For the WINDOWS platform you need to install [CygWin](https://www.cygwin.com/) or use some embedded UNIX-system.
-
-Every script displays its purpose and commandline-syntax when called without arguments.
 The scripts were written for the MP4 video format.
+There are no graphical user-interfaces, you work with command-lines in a terminal-window, using a cutting-plan (see description below).
+Every script displays its purpose and commandline-syntax when called without arguments.
 
 Some of the scripts call other scripts, thus you should stand in the scripts directory when launching one.  
-Most of the scripts expect a video-directory containing .MP4 (or .mp4) files that are to be processed.  
-Be aware that scripts are no _binaries_, they are readable, hopefully understandable and adaptable!
+__Most of the scripts expect a video-directory that contains all .mp4 files that are to be processed.__
+Mind that all videos must have the same dimension (width x height), the script do not check this. Joined videos of different dimensions may lead to strange results, at least when the YouTube-processing will run on them!
+
+Scripts are no _binaries_, they are hopefully understandable and adaptable for you!
 
 ----
 
