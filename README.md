@@ -10,7 +10,7 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/fritzthecap/ffmpeg-scripts?color=pink)
 
 UNIX shell scripts for video-cutting with **ffmpeg** (which must be pre-installed, I currently use version 6.1.1).  
-If you want to scale images via _imageToSize.sh_ or _imageToVideo.sh_, you also need **ImageMagick** installed.  
+If you want to scale images via _imageToSize.sh_ or use one of its callers like _imageToVideo.sh_, _titleForImage.sh_ or _joinScrollTextVideos.sh_, you also need **ImageMagick** installed.  
 There are no graphical user-interfaces, you work with command-lines in a terminal-window.
 
 For the WINDOWS platform you need to install [CygWin](https://www.cygwin.com/) or use some embedded UNIX-system.
