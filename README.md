@@ -17,8 +17,8 @@ There are no graphical user-interfaces, you work with command-lines in a termina
 Every script displays its purpose and commandline-syntax when called without arguments.
 
 Some of the scripts call other scripts, thus you should stand in the scripts directory when launching one.  
-__Most of the scripts expect a video-directory that contains all .mp4 files that are to be processed.__
-Mind that all videos must have the same dimension (width x height), the script do not check this. Joined videos of different dimensions may lead to strange results, at least when the YouTube-processing will run on them!
+__Most of the scripts expect a video-directory that contains all .mp4 files that are to be processed.__  
+Mind that all videos must have the same dimension (width x height), the scripts do not check this. Joined videos of different dimensions may lead to strange results, at least when the YouTube-processing will run on them!
 
 Scripts are no _binaries_, they are hopefully understandable and adaptable for you!
 
