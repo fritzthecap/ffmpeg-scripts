@@ -92,7 +92,7 @@ cat $concatFile
 [ "$mpegts" = "true" ] && fromMpegTs="-bsf:a aac_adtstoasc -brand avc1 -f 3gp"
 echo "Concatenating videos ..."
 
-ffmpeg -v error -y -f concat -i $concatFile -c copy $fromMpegTs $allCutsVideo
+ffmpeg -v error -y -f concat -i $concatFile -c copy $fromMpegTs -movflags +faststart $allCutsVideo
 
 cleanup
 echo "Generated $allCutsVideo"
