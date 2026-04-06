@@ -3,7 +3,8 @@
 ####################################################
 
 # defaultDimension=1920x1440
-defaultDimension=1920x1080	# standard video dimension
+# defaultDimension=1920x1080
+defaultDimension=2336x1080
 edgeColor=black
 
 syntax()	{
