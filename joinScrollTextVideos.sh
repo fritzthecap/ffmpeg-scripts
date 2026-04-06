@@ -4,6 +4,7 @@
 
 allCutsVideo=ALLCUTS.MP4
 imageExtension=png
+defaultDimension=2336x1080
 
 currentDir=`pwd`
 cd `dirname \$0`	# change to where this script resides
@@ -15,13 +16,14 @@ syntax() {
 	echo "	Creates and joins videos where texts scroll over images." >&2
 	echo "	Text- and image-files have same name but different extensions: .txt -> .$imageExtension" >&2
 	echo "	directory: the folder where text and image files are" >&2
-	echo "	widthxheight: image target dimension, default is 1920x1080" >&2
+	echo "	widthxheight: image target dimension, default is $defaultDimension" >&2
 	echo "	CAUTION: file names must not contain spaces or any kind of quotes!" >&2
 	exit 1
 }
 
 [ -d "$1" ] || syntax
-widthxheight=$2
+
+widthxheight=${2:-$defaultDimension}
 
 cd $1
 
