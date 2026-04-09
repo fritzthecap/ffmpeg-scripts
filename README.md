@@ -22,7 +22,7 @@ Some of the scripts call other scripts, thus you should stand in the scripts dir
 __Most of the scripts expect a video-directory that contains all .mp4 files that are to be processed.__  
 Mind that all videos must have the same dimension (width x height), the scripts do not check this. Joined videos of different dimensions may lead to strange results, at least when the YouTube-processing will run on them!
 
-Scripts are no _binaries_, they are hopefully understandable and adaptable for you!
+Scripts are no _binaries_, they are hopefully understandable and adaptable for you. Especially the video format (scale, dimension, e.g. 1920x1080) mostly is hardcoded in one of the top lines of the script. Currently the default is 2336x1080.
 
 ----
 
