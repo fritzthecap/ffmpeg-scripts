@@ -12,6 +12,8 @@
 UNIX shell scripts for video-cutting with **ffmpeg** (which must be pre-installed, I currently use version 6.1.1).
 If you want to scale images via _imageToSize.sh_ or use one of its callers like _imageToVideo.sh_, _titleForImage.sh_ or _joinScrollTextVideos.sh_, you also need **ImageMagick** installed. For the WINDOWS platform you need to install [CygWin](https://www.cygwin.com/) or use some embedded UNIX-system.
 
+Many of the scripts have been documented in my [Weblog](https://fritzthecat-blog.blogspot.com/2024/09/list-of-my-ffmpeg-scripts.html).
+
 The scripts were written for the MP4 video format.
 There are no graphical user-interfaces, you work with command-lines in a terminal-window, using a cutting-plan (see description below).
 Every script displays its purpose and commandline-syntax when called without arguments.
