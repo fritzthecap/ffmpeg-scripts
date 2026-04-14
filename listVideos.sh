@@ -10,6 +10,8 @@
 
 cd $1 || exit 1
 
+title=`basename \$1`
+
 cutsText=cuts.txt
 [ -f $cutsText ] &&	{	# do not overwrite manually edited one
 	echo "ERROR: $1/$cutsText already exists!" >&2
@@ -17,5 +19,7 @@ cutsText=cuts.txt
 }
 
 ls -1 *.MP4 *.mp4 2>/dev/null | sort >$cutsText
+
+echo "$title" >title.txt
 
 echo "Generated $cutsText video list in `pwd`"
