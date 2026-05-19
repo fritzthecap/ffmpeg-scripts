@@ -20,8 +20,9 @@ sourceVideo="$1"
 [ -n "$2" ] && {
 	topCropPixels=$2
 	bottomCropPixels=${3:-0}
-	
-	cropCommand="crop=iw:ih-$topCropPixels-$bottomCropPixels:0:$topCropPixels,"
+
+	# syntax crop = width : height : x : y
+	cropCommand="crop=iw:ih-$topCropPixels-$bottomCropPixels:0:$topCropPixels"
 }
 
 sourceDir=`dirname \$sourceVideo`
@@ -35,7 +36,7 @@ extension=${sourceFile#*.}	# extension without filename
 targetVideo=$sourceDir/${filename}_landscape.$extension
 
 ffmpeg -v error -y -i ${sourceVideo} \
-	-vf "${cropCommand}\
+	-vf "${cropCommand},\
 		scale=$defaultScale:force_original_aspect_ratio=decrease,\
 		pad=$defaultScale:-1:-1:color=$color" \
 	-c:v libx264 -crf 23 \
