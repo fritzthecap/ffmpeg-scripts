@@ -38,8 +38,6 @@ else
 	fi
 fi
 
-videoDirectory=`dirname \$video`
-
 echo "Creating $image ..." >&2
 	
 ffmpeg -y -v error \
