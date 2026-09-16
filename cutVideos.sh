@@ -58,9 +58,17 @@ mkdir $cutsDir || exit 5
 awk '
 	BEGIN	{
 		IGNORECASE = 1	# make all pattern matching case-insensitive
+		
+		# inherit shell variables
 		toMpegTs = ("'$mpegts'" == "true")	# mpegts comes from underlying shell
 		cutsDir = "'$cutsDir'"
-		fileNr = 0
+		
+		fileNr = 0	# index of video file
+		
+		# experience: correct cutting-plan times because
+		# either video players do not give precise seconds, or ffmpeg does not cut precisely
+		correctionSeconds = 0.7
+		minimumSecondsToCorrect = 10
 		
 		if (exists("TITLE.MP4"))
 			if (toMpegTs)	{	# must convert to transport-stream format
@@ -81,13 +89,35 @@ awk '
 	}
 	
 	function addCommand(fromTime, toTime)	{
-		if (toTime ~ /^end/)	 {
-			checkWithinVideo(calculateSeconds(fromTime))
+		toTimeIsEnd = (toTime ~ /^end/)
+		toTimeWasCorrected = 0
+		
+		# my cutting experience: must correct cutting-plan times!
+		if (correctionSeconds > 0) {
+			fromTimeSeconds = calculateSeconds(fromTime);
+			# apply time corrections only on start time greater than 10 seconds
+			# TODO: consider percentage of start seconds!
+			
+			if (fromTimeSeconds >= minimumSecondsToCorrect) {
+				fromTime = addSeconds(fromTime, correctionSeconds)
+				
+				if ( ! toTimeIsEnd ) {
+					toTime = addSeconds(toTime, correctionSeconds)
+					toTimeWasCorrected = 1
+				}
+			}
+		}
+		
+		if (toTimeIsEnd)	 {
+			checkWithinVideo(calculateSeconds(fromTime), 0)
+			
 			toTime = ""		# take all until end
 			duration = ""
 		}
 		else	{
-			durationSeconds = checkFromTo(fromTime, toTime)	# checks both for correctness and existence
+			# check for both correctness and existence
+			durationSeconds = checkFromTo(fromTime, toTime, toTimeWasCorrected)	
+			
 			toTime = "-to " toTime
 			duration = "-t " durationSeconds
 		}
@@ -96,7 +126,7 @@ awk '
 		
 		fileNr++
 		
-		# output seeking by decoding, slow, fails with MPEGTS
+		# DEPRECATED: output seeking by decoding, slow, fails with MPEGTS !
 		# commands[fileNr] = "ffmpeg -v error -y -i " videoFile " -ss " fromTime " " toTime " -c copy -avoid_negative_ts 1 " mpegts nextClipFile()
 		
 		# input seeking by keyframes, fast, not precise, works with MPEGTS
@@ -110,21 +140,22 @@ awk '
 			executionError("Command failed with exit " exitCode ": " command, exitCode)
 	}
 	
-	function checkFromTo(from, to)	{
-		fromSeconds = calculateSeconds(from)
-		toSeconds = calculateSeconds(to)
+	function checkFromTo(fromTime, toTime, toTimeWasCorrected)	{	# returns duration in seconds
+		fromSeconds = calculateSeconds(fromTime)
+		toSeconds = calculateSeconds(toTime)
 		
 		if (fromSeconds < 0)
-			error("Begin-time " fromSeconds " is negative: " $0, 7)
+			error("Begin-time " fromTime " is negative: " $0, 7)
 			
 		if (fromSeconds >= toSeconds)
-			error("Begin-time " from " is greater or equal end-time " to, 7)
+			error("Begin-time " fromTime " is greater or equal end-time " toTime, 7)
 		
-		checkWithinVideo(toSeconds)
+		toSeconds = checkWithinVideo(toSeconds, toTimeWasCorrected)
+		
 		return toSeconds - fromSeconds
 	}
 	
-	function checkWithinVideo(timeInSeconds)	{
+	function checkWithinVideo(timeInSeconds, toTimeWasCorrected)	{
 		if (timeInSeconds > 0)	{	# no need to check zero
 			durationCommand = "ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 " videoFile
 			durationCommand | getline videoSeconds
@@ -133,25 +164,46 @@ awk '
 				error("Could not read video seconds from " videoFile)
 			
 			print "Checking if " videoFile " having " videoSeconds " seconds contains " timeInSeconds >"/dev/stderr"
-			if (timeInSeconds >= videoSeconds)
-				error("Time " timeInSeconds " is out of video bounds (" videoSeconds " seconds): " $0, 7)
+			if (timeInSeconds > videoSeconds)
+				if (toTimeWasCorrected && (timeInSeconds - videoSeconds) <= correctionSeconds)
+					timeInSeconds = videoSeconds
+				else
+					error("Time " timeInSeconds " is out of video bounds (" videoSeconds " seconds): " $0, 7)
 		}
-		return videoSeconds
+		return timeInSeconds
 	}
 	
-	function calculateSeconds(time)	{
+	function calculateSeconds(time)	{	# assumes seconds are always present
 		numberOfTimeParts = split(time, timeParts, ":")
 		resultTime = 0
 		for (i in timeParts)	{
-			timePart = timeParts[i]
-			if (timePart !~ /^[0-9\.]+$/)
-				error("Invalid time part: " timePart, 7)
-			
-			resultTime += timePart
-			if (i < numberOfTimeParts)
+			resultTime += checkTimePart(timeParts[i])
+			if (i < numberOfTimeParts)	# not yet seconds
 				resultTime *= 60
 		}
 		return resultTime
+	}
+	
+	function addSeconds(time, seconds)	{
+		numberOfTimeParts = split(time, timeParts, ":")
+		resultString = ""
+		for (i in timeParts)	{
+			timePart = checkTimePart(timeParts[i])
+			if (i >= numberOfTimeParts)	# is seconds
+				timePart += seconds
+				
+			if (resultString == "")
+				resultString = timePart
+			else
+				resultString = resultString ":" timePart
+		}
+		return resultString
+	}
+	
+	function checkTimePart(timePart)	{
+		if (timePart !~ /^[0-9\.]+$/)	# only dot can be decimal point
+			error("Invalid time part: " timePart, 7)
+		return timePart
 	}
 	
 	function error(message, exitCode)	{
@@ -187,7 +239,7 @@ awk '
 			error("Found start - end time without video file: " $0, 9)
 	}
 	
-	/^all/	{	# copy the whole video as clip
+	/^all/	{	# is a time spec, copy the whole video as clip
 		addCommand("0", "end")
 	}
 	
