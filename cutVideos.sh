@@ -68,7 +68,7 @@ awk '
 		# experience: correct cutting-plan times because
 		# either video players do not give precise seconds, or ffmpeg does not cut precisely
 		correctionSeconds = 0.7
-		minimumSecondsToCorrect = 10
+		minimumSecondsToCorrect = 4
 		
 		if (exists("TITLE.MP4"))
 			if (toMpegTs)	{	# must convert to transport-stream format
@@ -95,8 +95,7 @@ awk '
 		# my cutting experience: must correct cutting-plan times!
 		if (correctionSeconds > 0) {
 			fromTimeSeconds = calculateSeconds(fromTime);
-			# apply time corrections only on start time greater than 10 seconds
-			# TODO: consider percentage of start seconds!
+			# apply time corrections only on start times greater than minimumSecondsToCorrect
 			
 			if (fromTimeSeconds >= minimumSecondsToCorrect) {
 				fromTime = addSeconds(fromTime, correctionSeconds)
