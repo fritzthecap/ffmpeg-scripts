@@ -56,7 +56,7 @@ mkdir $cutsDir || exit 5
 
 # read the cutting plan and execute it
 awk '
-	BEGIN	{
+	BEGIN	{	# before first line
 		IGNORECASE = 1	# make all pattern matching case-insensitive
 		
 		# inherit shell variables
@@ -89,14 +89,17 @@ awk '
 	}
 	
 	function addCommand(fromTime, toTime)	{
+		if ( ! videoFile )	# there was no video file name before
+			error("Found time spec without video file: " $0, 9)
+	
 		toTimeIsEnd = (toTime ~ /^end/)
 		toTimeWasCorrected = 0
 		
 		# my cutting experience: must correct cutting-plan times!
 		if (correctionSeconds > 0) {
-			fromTimeSeconds = calculateSeconds(fromTime);
-			# apply time corrections only on start times greater than minimumSecondsToCorrect
+			fromTimeSeconds = calculateSeconds(fromTime)
 			
+			# apply time corrections only on start times greater than minimumSecondsToCorrect
 			if (fromTimeSeconds >= minimumSecondsToCorrect) {
 				fromTime = addSeconds(fromTime, correctionSeconds)
 				
@@ -128,7 +131,7 @@ awk '
 		# DEPRECATED: output seeking by decoding, slow, fails with MPEGTS !
 		# commands[fileNr] = "ffmpeg -v error -y -i " videoFile " -ss " fromTime " " toTime " -c copy -avoid_negative_ts 1 " mpegts nextClipFile()
 		
-		# input seeking by keyframes, fast, not precise, works with MPEGTS
+		# input seeking by keyframes, fast, not precise, but works with MPEGTS
 		commands[fileNr] = "ffmpeg -v error -y -ss " fromTime " " duration " -i " videoFile " -c copy -avoid_negative_ts 1 " mpegts nextClipFile(fileNr)
 	}
 	
@@ -224,25 +227,28 @@ awk '
 		return system("test -f " filePath) == 0
 	}
 	
+	{	# all lines go through here
+		# mind that video file names without time spec lines will be ignored!
 	
-	/^[a-zA-Z0-9_\-]+\.MP4[ \t]*$/	{	# next video file
-		videoFile = $1
-		if ( ! exists(videoFile) )
-			error("file does not exist or is empty: " videoFile, 8)
-	}
-	
-	/^[0-9]+:?[0-9\.]*[ \t]/	{	# next start - end times of a clip to extract
-		if (videoFile)	# there was a video file name before
+		if ( $0 ~ /^[a-zA-Z0-9_\-]+\.MP4[ \t]*$/ ) {	# next video file
+			videoFile = $1
+			if ( ! exists(videoFile) )
+				error("File does not exist or is empty: " videoFile, 8)
+		}
+		else if ( $0 ~ /^[0-9]+:?[0-9\.]*[ \t]/ ) {	# next time spec of a clip
 			addCommand($1, ($2 == "-" ? $3 : $2))
-		else
-			error("Found start - end time without video file: " $0, 9)
+		}
+		else if ( $0 ~ /^all/ ) {	# special time spec for whole video
+			addCommand("0", "end")
+		}
+		else if ( $0 ~ /^[ \t]/ ) {	# everything indented is a comment
+		}
+		else if ( $0 ~ /^.+$/ ) {	# every other non-emtpy line is an error
+			error("Not a video file, not a time spec (please indent comments): " $0, 10)
+		}
 	}
-	
-	/^all/	{	# is a time spec, copy the whole video as clip
-		addCommand("0", "end")
-	}
-	
-	END	{
+
+	END	{	# after last line
 		if ( ! errNo )	# error() would set this
 			if ( ! fileNr )
 				error("No video cuts were found in '$cuttingPlan' !", 9)
@@ -250,6 +256,7 @@ awk '
 				for (c in commands)	# execute all collected commands
 					executeCommand(commands[c])
 	}
+
 ' $cuttingPlan || exit $?
 
 echo "Generated cut videos in `pwd`/$cutsDir"
