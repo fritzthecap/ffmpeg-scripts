@@ -67,7 +67,7 @@ awk '
 		
 		# experience: correct cutting-plan times because
 		# either video players do not give precise seconds, or ffmpeg does not cut precisely
-		correctionSeconds = 0.7
+		correctionSeconds = 0.5
 		minimumSecondsToCorrect = 4
 		
 		if (exists("TITLE.MP4"))
