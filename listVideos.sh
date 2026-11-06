@@ -20,6 +20,6 @@ cutsText=cuts.txt
 
 ls -1 *.MP4 *.mp4 2>/dev/null | sort >$cutsText
 
-echo "$title" >title.txt
+echo -n "$title" >title.txt
 
 echo "Generated $cutsText video list in `pwd`"
